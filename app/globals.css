@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-geist-sans: "Geist", system-ui, sans-serif;
+    --font-geist-mono: "Geist Mono", monospace;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #6B0015;
+    color: #F8F5F2;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  ::selection {
+    background-color: rgba(242, 106, 33, 0.35);
+    color: #F8F5F2;
+  }
+
+  /* Custom scrollbar for dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #4A0010;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #8A0020;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #F26A21;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 xl:px-12;
+  }
+
+  .section-spacing {
+    @apply py-12 sm:py-16 lg:py-20;
+  }
+
+  .premium-card {
+    background-color: #2A1016;
+    border: 1px solid rgba(242, 106, 33, 0.12);
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.35);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .premium-card:hover {
+    box-shadow: 0 8px 48px rgba(0,0,0,0.45);
+    border-color: rgba(242, 106, 33, 0.25);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Button systems */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-4 text-sm font-semibold tracking-wide uppercase transition-all duration-300;
+    background-color: #F26A21;
+    color: #4A0010;
+    border-radius: 0.5rem;
+  }
+
+  .btn-primary:hover {
+    background-color: #FF7A35;
+    box-shadow: 0 4px 24px rgba(242, 106, 33, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-4 text-sm font-semibold tracking-wide uppercase transition-all duration-300;
+    background-color: transparent;
+    color: #F26A21;
+    border: 1px solid #F26A21;
+    border-radius: 0.5rem;
+  }
+
+  .btn-secondary:hover {
+    background-color: rgba(242, 106, 33, 0.1);
+    border-color: #FF7A35;
+    color: #FF7A35;
+  }
+}
