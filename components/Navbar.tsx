@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useSpring, useTransform } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Linkedin, Instagram, Youtube } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { navLinks } from "@/data/site-data";
@@ -11,17 +11,12 @@ import { navLinks } from "@/data/site-data";
 const EASE_OUT_EXPO   = [0.16, 1, 0.3, 1]    as const;
 const EASE_IN_OUT     = [0.76, 0, 0.24, 1]    as const;
 
-// ── Shared logo image (both light and dark contexts) ──────────────────────
-function LogoImage({ className = "" }: { className?: string }) {
+// ── X (Twitter) icon ─────────────────────────────────────────────────────
+function XIcon({ className = "" }: { className?: string }) {
   return (
-    <Image
-      src="/images/notgate.png"           // ← swap filename if different
-      alt="NOTGATE"
-      width={160}
-      height={40}
-      priority
-      className={`h-10 w-auto object-contain ${className}`}
-    />
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
   );
 }
 
@@ -50,7 +45,6 @@ function MenuToggle({
     >
       {/* Icon morphs between bars and X */}
       <span className="relative w-4 h-4 flex-shrink-0">
-        {/* Top bar → top arm of X */}
         <motion.span
           animate={isOpen
             ? { rotate: 45, y: 6, width: "100%" }
@@ -60,14 +54,12 @@ function MenuToggle({
           className="absolute top-[3px] left-0 h-[1.5px] bg-current rounded-full block"
           style={{ transformOrigin: "center" }}
         />
-        {/* Middle bar — fades out */}
         <motion.span
           animate={isOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.25, ease: EASE_IN_OUT }}
           className="absolute top-[7px] left-0 h-[1.5px] w-full bg-current rounded-full block"
           style={{ transformOrigin: "center" }}
         />
-        {/* Bottom bar → bottom arm of X */}
         <motion.span
           animate={isOpen
             ? { rotate: -45, y: -6, width: "100%" }
@@ -113,10 +105,10 @@ function MenuToggle({
 
 // ── Full-screen menu overlay ───────────────────────────────────────────────
 const socials = [
-  { label: "X",  href: "#" },
-  { label: "in", href: "#" },
-  { label: "IG", href: "#" },
-  { label: "YT", href: "#" },
+  { icon: XIcon, label: "X", href: "#" },
+  { icon: Linkedin, label: "LinkedIn", href: "#" },
+  { icon: Instagram, label: "Instagram", href: "#" },
+  { icon: Youtube, label: "YouTube", href: "#" },
 ];
 
 function MenuOverlay({
@@ -179,7 +171,6 @@ function MenuOverlay({
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.55, delay: 0.15, ease: EASE_OUT_EXPO }}
                 >
-                  {/* Invert logo for dark background */}
                   <Image
                     src="/images/notgate.png"
                     alt="NOTGATE"
@@ -236,7 +227,7 @@ function MenuOverlay({
                 ))}
               </nav>
 
-              {/* Bottom row — socials */}
+              {/* Bottom row — socials with real icons */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0  }}
@@ -247,14 +238,15 @@ function MenuOverlay({
                   <motion.a
                     key={s.label}
                     href={s.href}
+                    aria-label={s.label}
                     initial={{ opacity: 0, scale: 0.7 }}
                     animate={{ opacity: 1, scale: 1   }}
                     transition={{ duration: 0.4, delay: 0.6 + i * 0.06, ease: EASE_OUT_EXPO }}
                     whileHover={{ scale: 1.1, borderColor: "rgba(194,82,28,0.6)" }}
                     whileTap={{ scale: 0.92 }}
-                    className="w-10 h-10 rounded-full border border-warm/18 flex items-center justify-center text-warm/50 hover:text-warm transition-colors duration-300 text-xs font-medium"
+                    className="w-10 h-10 rounded-full border border-warm/18 flex items-center justify-center text-warm/50 hover:text-warm transition-colors duration-300"
                   >
-                    {s.label}
+                    <s.icon className="w-4 h-4" />
                   </motion.a>
                 ))}
 
@@ -281,13 +273,11 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  // Close on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMenuOpen(false); };
     window.addEventListener("keydown", onKey);
@@ -303,9 +293,7 @@ export function Navbar() {
         className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-4 sm:pt-5"
       >
         <motion.nav
-          animate={{
-            maxWidth: scrolled ? "56rem" : "72rem",
-          }}
+          animate={{ maxWidth: scrolled ? "56rem" : "72rem" }}
           transition={{ duration: 0.55, ease: EASE_IN_OUT }}
           className={`mx-auto flex items-center justify-between rounded-full px-5 py-3 transition-all duration-500
             ${scrolled
@@ -313,7 +301,6 @@ export function Navbar() {
               : "bg-white/82 backdrop-blur-md  shadow-[0_2px_16px_rgba(0,0,0,0.06)]"
             }`}
         >
-          {/* Logo — no text, just the image */}
           <Link href="/" aria-label="NOTGATE home" className="flex items-center">
             <motion.div
               whileHover={{ scale: 1.03 }}
@@ -331,7 +318,6 @@ export function Navbar() {
             </motion.div>
           </Link>
 
-          {/* Menu toggle */}
           <MenuToggle
             isOpen={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
@@ -340,7 +326,6 @@ export function Navbar() {
         </motion.nav>
       </motion.header>
 
-      {/* Full-screen overlay */}
       <MenuOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
     </>
   );
